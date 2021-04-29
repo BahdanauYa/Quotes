@@ -45,7 +45,7 @@ namespace Quotes.Models
         /// <returns>Строка-результат с курсом к рублю и доллару</returns>
         public string Search(string searchField)
         {
-            if (Valute == null) return "Поиск не дал результатов";
+            if ((Valute == null) || (string.IsNullOrEmpty(searchField))) return "Поиск не дал результатов";
 
             var usd = Valute.FirstOrDefault(i => i.Value.CharCode.ToUpper() == "USD").Value;
 
