@@ -1,11 +1,10 @@
 ﻿using Prism.Ioc;
-using Prism.Unity;
 using System.Windows;
 using Quotes.Views;
 
 namespace Quotes
 {
-    public partial class App : PrismApplication
+    public partial class App
     {
         protected override Window CreateShell()
         {
