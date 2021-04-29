@@ -8,6 +8,8 @@ namespace Quotes
     {
         protected override Window CreateShell()
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
             return Container.Resolve<MainWindow>();
         }
 

@@ -9,17 +9,24 @@ namespace Quotes.Models
     {
         public static Daily Download()
         {
-            Daily daily;
-
-            var wc = new WebClient();
-            using (var stream = new MemoryStream(wc.DownloadData("https://www.cbr-xml-daily.ru/daily_json.js")))
+            try
             {
-                daily = JsonSerializer.Deserialize<Daily>(new ReadOnlySpan<byte>(stream.ToArray()));
-            }
+                Daily daily;
 
-            daily.InitBindingData();
-            
-            return daily;
+                var wc = new WebClient();
+                using (var stream = new MemoryStream(wc.DownloadData("https://www.cbr-xml-daily.ru/daily_json.js")))
+                {
+                    daily = JsonSerializer.Deserialize<Daily>(new ReadOnlySpan<byte>(stream.ToArray()));
+                }
+
+                daily.InitBindingData();
+
+                return daily;
+            }
+            catch (Exception)
+            {
+                return new Daily();
+            }
         }
     }
 }

@@ -112,9 +112,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Daily.cs" />
     <Compile Include="Models\JsonLoader.cs" />
+    <Compile Include="Tools\DoubleToPersistentStringConverter.cs" />
     <Compile Include="Tools\InverseBooleanConverter.cs" />
+    <Compile Include="Tools\TextBoxInputBehavior.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="Resources\Styles.xaml">
       <SubType>Designer</SubType>

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text.Json.Serialization;
 using Prism.Mvvm;
 
 namespace Quotes.Models
 {
-    public class Daily:BindableBase
+    /// <summary> Десериализуемый класс соответствующий файлу .js </summary>
+    public class Daily : BindableBase
     {
         private Dictionary<string, Currency> _valute;
         private Dictionary<string, CurrencyWrapper> _valuteBinding;
@@ -36,7 +38,31 @@ namespace Quotes.Models
             }
         }
 
-        /// <summary> Инициализация объекта, который будет использоваться для байндинга </summary>
+        /// <summary>
+        /// Поиск валюты по символьному коду или стране
+        /// </summary>
+        /// <param name="searchField">Ввод от пользователя</param>
+        /// <returns>Строка-результат с курсом к рублю и доллару</returns>
+        public string Search(string searchField)
+        {
+            if (Valute == null) return "Поиск не дал результатов";
+
+            var usd = Valute.FirstOrDefault(i => i.Value.CharCode.ToUpper() == "USD").Value;
+
+            foreach (var pair in Valute)
+            {
+                if (pair.Value.Name.ToUpper().Contains(searchField.ToUpper()) ||
+                    pair.Value.CharCode.ToUpper().Contains(searchField.ToUpper()))
+                {
+                    return "Валюта: " + pair.Value.Nominal + " " + pair.Value.Name + "\nКурс к рублю: " +
+                           pair.Value.Value + "\nКурс к доллару: " + (pair.Value.Value / usd.Value).ToString("F4");
+                }
+            }
+
+            return "Поиск не дал результатов";
+        }
+
+        /// <summary> Инициализация объекта, который будет использоваться для байндинга TreeView </summary>
         public void InitBindingData()
         {
             ValuteBinding = new Dictionary<string, CurrencyWrapper>();
@@ -46,7 +72,7 @@ namespace Quotes.Models
             }
         }
     }
-
+    
     public class CurrencyWrapper
     {
         public CurrencyWrapper(Currency currency)
@@ -55,23 +81,5 @@ namespace Quotes.Models
         }
 
         public IList<Currency> Currencies { get; set; }
-    }
-
-
-    public class Currency
-    {
-        public Currency()
-        {
-            //Temp = new ObservableCollection<string>(){"355"};
-        }
-
-        public string ID { get; set; }
-        public string NumCode { get; set; }
-        public string CharCode { get; set; }
-        public int Nominal { get; set; }
-        public string Name { get; set; }
-        public double Value { get; set; }
-        public double Previous { get; set; }
-        //public ObservableCollection<string> Temp { get; set; }
     }
 }
